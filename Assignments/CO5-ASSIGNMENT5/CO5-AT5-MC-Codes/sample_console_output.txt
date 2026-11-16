@@ -1,0 +1,172 @@
+
+Good connectivity and battery | FIFO
+------------------------------------
+R1: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R2: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R3: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R4: REJECT — ciphertext/encryption validation failed; battery=80%, network=WIFI, doze=False
+R5: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R6: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R7: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R8: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R1: server acknowledgement received
+R2: server acknowledgement received
+R3: server acknowledgement received
+R5: server acknowledgement received
+R6: server acknowledgement received
+R7: server acknowledgement received
+R8: server acknowledgement received
+Enqueued=8, decisions=8, deferred=0, cancelled/rejected=1, successful=7, peak_workers=2
+Final outcome: RESIDUAL BACKLOG=1
+
+Good connectivity and battery | PRIORITY
+----------------------------------------
+R3: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R8: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R5: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R4: REJECT — ciphertext/encryption validation failed; battery=80%, network=WIFI, doze=False
+R2: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R7: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R1: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R6: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+R3: server acknowledgement received
+R8: server acknowledgement received
+R5: server acknowledgement received
+R2: server acknowledgement received
+R7: server acknowledgement received
+R1: server acknowledgement received
+R6: server acknowledgement received
+Enqueued=8, decisions=8, deferred=0, cancelled/rejected=1, successful=7, peak_workers=2
+Final outcome: RESIDUAL BACKLOG=1
+
+Doze / low battery | FIFO
+-------------------------
+R1: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R2: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R3: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R4: REJECT — ciphertext/encryption validation failed; battery=15%, network=WEAK, doze=True
+R5: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R6: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R7: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R8: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+Enqueued=8, decisions=8, deferred=7, cancelled/rejected=1, successful=0, peak_workers=0
+Final outcome: RESIDUAL BACKLOG=8
+
+Doze / low battery | PRIORITY
+-----------------------------
+R3: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R8: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R5: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R4: REJECT — ciphertext/encryption validation failed; battery=15%, network=WEAK, doze=True
+R2: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R7: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R1: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+R6: DEFER — network unavailable or weak; battery=15%, network=WEAK, doze=True
+Enqueued=8, decisions=8, deferred=7, cancelled/rejected=1, successful=0, peak_workers=0
+Final outcome: RESIDUAL BACKLOG=8
+
+Permission revoked mid-execution boundary | FIFO
+------------------------------------------------
+R1: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R2: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R3: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R4: REJECT — ciphertext/encryption validation failed; battery=70%, network=WIFI, doze=False
+R5: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R6: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R7: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R8: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+Enqueued=8, decisions=8, deferred=0, cancelled/rejected=8, successful=0, peak_workers=0
+Final outcome: RESIDUAL BACKLOG=8
+
+Permission revoked mid-execution boundary | PRIORITY
+----------------------------------------------------
+R3: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R8: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R5: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R4: REJECT — ciphertext/encryption validation failed; battery=70%, network=WIFI, doze=False
+R2: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R7: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R1: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+R6: CANCEL — permission revoked; battery=70%, network=WIFI, doze=False
+Enqueued=8, decisions=8, deferred=0, cancelled/rejected=8, successful=0, peak_workers=0
+Final outcome: RESIDUAL BACKLOG=8
+Prediction: Workload B should produce more deferrals and permanent rejections
+because network, battery, Doze and security constraints are less favourable.
+
+Workload A — favourable
+-----------------------
+A2: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A7: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A1: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A3: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A4: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A5: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A6: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A8: RUN — constraints satisfied; battery=80%, network=WIFI, doze=False
+A2: server acknowledgement received
+A7: server acknowledgement received
+A1: server acknowledgement received
+A3: server acknowledgement received
+A4: server acknowledgement received
+A5: server acknowledgement received
+A6: server acknowledgement received
+A8: server acknowledgement received
+Enqueued=8, decisions=8, deferred=0, cancelled/rejected=0, successful=8, peak_workers=2
+Final outcome: ALL DELIVERED
+
+Workload B — adversarial
+------------------------
+B1: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+B8: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+B4: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+B3: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+B7: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+B2: REJECT — ciphertext/encryption validation failed; battery=18%, network=WEAK, doze=True
+B6: CANCEL — permission revoked; battery=18%, network=WEAK, doze=True
+B5: DEFER — network unavailable or weak; battery=18%, network=WEAK, doze=True
+Enqueued=8, decisions=8, deferred=6, cancelled/rejected=2, successful=0, peak_workers=0
+Final outcome: RESIDUAL BACKLOG=8
+B3 small-instance comparison
+Light feed         exact=(3,1) cost=6.20; adaptive=(3,3) cost=10.20; match=False
+Heavy feed         exact=(2,3) cost=33.80; adaptive=(1,1) cost=91.90; match=False
+Mixed feed         exact=(3,2) cost=22.90; adaptive=(2,2) cost=31.60; match=False
+Counter-example    exact=(3,3) cost=33.30; adaptive=(2,2) cost=73.20; match=False
+
+B3 scalability operation counts
+items | exact configs | exact item evaluations | adaptive scans | adaptive changes
+    5 |             9 |                    45 |              5 | 0
+   20 |             9 |                   180 |             20 | 0
+  100 |             9 |                   900 |            100 | 0
+  500 |             9 |                  4500 |            500 | 0
+B4 heuristic decisions (estimates are model proxies, not device measurements)
+
+Device A mid-range: 1080p at 4.5 Mbps; UPLOAD NOW
+  upload estimate=3.00s; energy proxy=10.10; battery estimate=78.00% -> 77.19%
+
+Device B entry-level: 480p at 0.8 Mbps; WAIT for Wi-Fi if clip is not urgent
+  upload estimate=8.00s; energy proxy=14.00; battery estimate=24.00% -> 22.88%
+
+Device C flagship: 720p at 2.0 Mbps; UPLOAD NOW if stable; otherwise defer
+  upload estimate=2.67s; energy proxy=5.87; battery estimate=52.00% -> 51.53%
+
+Device D low battery: 480p at 0.8 Mbps; DEFER unless user requests immediate upload
+  upload estimate=0.32s; energy proxy=2.22; battery estimate=12.00% -> 11.82%
+
+Counter-example: heuristic chooses HIGH; a 720p balanced profile may be better
+because thermal headroom and scene quality are not inputs to this simple rule.
+
+========================================================================
+RUNNING B1_Background_Work/background_simulation.py
+========================================================================
+
+========================================================================
+RUNNING B2_Adversarial_Workload/adversarial_workloads.py
+========================================================================
+
+========================================================================
+RUNNING B3_UI_Optimisation/ui_optimisation.py
+========================================================================
+
+========================================================================
+RUNNING B4_Multimedia_Decision/multimedia_strategy.py
+========================================================================
