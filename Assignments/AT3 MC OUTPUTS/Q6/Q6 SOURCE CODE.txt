@@ -1,0 +1,54 @@
+# Q6: Small AODV route-discovery demonstration plus DSDV/AODV comparison.
+# RREQ is broadcast, RREP returns along a reverse path, RERR reports a break.
+ 
+from collections import deque
+ 
+network = {
+    "S": ["A", "B"],
+    "A": ["S", "C"],
+    "B": ["S", "C"],
+    "C": ["A", "B", "D"],
+    "D": ["C"],
+}
+ 
+def aodv_route_discovery(graph, source, destination):
+    queue = deque([(source, [source])])
+    visited = {source}
+    rreq_transmissions = 0
+ 
+    print(f"RREQ: {source} searches for {destination}")
+    while queue:
+        node, path = queue.popleft()
+        if node == destination:
+            print("RREP: destination replies along reverse path:",
+                  " -> ".join(reversed(path)))
+            return path, rreq_transmissions
+        for neighbour in graph.get(node, []):
+            if neighbour not in visited:
+                visited.add(neighbour)
+                rreq_transmissions += 1
+                print(f"RREQ forwarded: {node} -> {neighbour}")
+                queue.append((neighbour, path + [neighbour]))
+ 
+    print("RERR: no route available.")
+    return None, rreq_transmissions
+ 
+path, rreq_count = aodv_route_discovery(network, "S", "D")
+print("\nAODV route:", " -> ".join(path) if path else "Unavailable")
+print("RREQ forwarding events:", rreq_count)
+ 
+# Comparison using the same conceptual test conditions.
+print("\nDSDV vs AODV")
+print(f"{'Parameter':24} {'DSDV':28} {'AODV'}")
+rows = [
+    ("Route creation", "Before data transmission", "When route is needed"),
+    ("Control overhead", "Periodic table updates", "RREQ/RREP/RERR messages"),
+    ("First-packet delay", "Usually lower if route exists", "Route discovery adds delay"),
+    ("Mobility response", "Table convergence required", "Broken route is repaired"),
+    ("Best fit", "Stable topology", "Dynamic topology"),
+]
+for row in rows:
+    print(f"{row[0]:24} {row[1]:28} {row[2]}")
+ 
+print("\nIf a link on the active route fails, AODV sends an RERR and starts")
+print("route discovery again when communication still requires a route.")

@@ -1,0 +1,48 @@
+# Q3: Compare infrastructure-based cellular forwarding with ad hoc multi-hop.
+# The graph is small and illustrative. A breadth-first search finds a path.
+ 
+from collections import deque
+ 
+def shortest_path(graph, start, goal):
+    queue = deque([(start, [start])])
+    visited = {start}
+    while queue:
+        node, path = queue.popleft()
+        if node == goal:
+            return path
+        for neighbour in graph.get(node, []):
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append((neighbour, path + [neighbour]))
+    return None
+ 
+# Ad hoc network: nodes forward packets for one another.
+adhoc_graph = {
+    "Ambulance": ["Rescue-1"],
+    "Rescue-1": ["Ambulance", "Police-1"],
+    "Police-1": ["Rescue-1", "Medical-1"],
+    "Medical-1": ["Police-1"],
+}
+ 
+# Cellular network: mobile devices communicate through a base station.
+cellular_graph = {
+    "Ambulance": ["Base-Station"],
+    "Base-Station": ["Ambulance", "Control-Centre"],
+    "Control-Centre": ["Base-Station"],
+}
+ 
+adhoc_path = shortest_path(adhoc_graph, "Ambulance", "Medical-1")
+cellular_path = shortest_path(cellular_graph, "Ambulance", "Control-Centre")
+ 
+print("Q3 - NETWORK ARCHITECTURE COMPARISON")
+print("\nAd hoc path:", " -> ".join(adhoc_path) if adhoc_path else "No route")
+print("Ad hoc hop count:", len(adhoc_path) - 1 if adhoc_path else "N/A")
+print("\nCellular path:",
+      " -> ".join(cellular_path) if cellular_path else "No route")
+print("Cellular hop count:", len(cellular_path) - 1 if cellular_path else "N/A")
+ 
+print("\nEngineering interpretation:")
+print("- Cellular communication uses fixed base-station infrastructure.")
+print("- Ad hoc communication forwards data through participating mobile nodes.")
+print("- If the base station fails, this cellular path becomes unavailable.")
+print("- The ad hoc path can continue while an alternate connected node path exists.")
