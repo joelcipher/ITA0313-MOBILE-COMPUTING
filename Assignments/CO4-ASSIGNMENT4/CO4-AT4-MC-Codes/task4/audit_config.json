@@ -1,0 +1,23 @@
+{
+  "data_stores": [
+    {
+      "name": "patient_db",
+      "type": "encrypted_sqlite",
+      "key_storage": "android_keystore"
+    },
+    {
+      "name": "auth_token",
+      "type": "encrypted_private_file",
+      "key_storage": "android_keystore"
+    }
+  ],
+  "network_endpoints": [
+    "https://api.example.org/v1/sync"
+  ],
+  "signing_configured": true,
+  "debuggable": false,
+  "required_permissions": [
+    "android.permission.CAMERA",
+    "android.permission.ACCESS_FINE_LOCATION"
+  ]
+}
