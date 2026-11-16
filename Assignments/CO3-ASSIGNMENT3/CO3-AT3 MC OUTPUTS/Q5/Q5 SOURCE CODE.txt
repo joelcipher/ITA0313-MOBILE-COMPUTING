@@ -1,0 +1,41 @@
+# Q5: Simplified DSDV routing-table demonstration.
+# DSDV is proactive: nodes maintain routes before data is requested.
+# This example models sequence numbers, hop counts and a topology change.
+ 
+INFINITY = 999
+ 
+class DSDVNode:
+    def __init__(self, name):
+        self.name = name
+        self.table = {}
+ 
+    def add_route(self, destination, next_hop, hops, sequence):
+        old = self.table.get(destination)
+        # Prefer newer sequence number; for equal sequence, prefer fewer hops.
+        if (old is None or sequence > old[2]
+                or (sequence == old[2] and hops < old[1])):
+            self.table[destination] = (next_hop, hops, sequence)
+ 
+    def show(self):
+        print(f"\nRouting table at {self.name}")
+        print("Destination   Next hop   Hops   Seq. no.")
+        for dest, (next_hop, hops, seq) in sorted(self.table.items()):
+            print(f"{dest:12} {next_hop:9} {hops:6} {seq:9}")
+ 
+# Topology: A-B-D and A-C-D. Initially A uses B; after B-D fails, use C.
+A = DSDVNode("A")
+A.add_route("A", "-", 0, 2)
+A.add_route("B", "B", 1, 4)
+A.add_route("C", "C", 1, 4)
+A.add_route("D", "B", 2, 6)
+A.show()
+ 
+print("\nLink B-D fails. Node A receives a newer route advertisement.")
+A.add_route("D", "C", 2, 8)
+A.show()
+ 
+print("\nQ5 interpretation:")
+print("- Routes are maintained proactively in routing tables.")
+print("- Sequence number 8 is newer than sequence number 6.")
+print("- The route to D changes from next hop B to next hop C.")
+print("- Periodic table updates create control overhead even without data traffic.")

@@ -1,0 +1,52 @@
+# Q2: A simplified event-based Mobile IP model.
+# Demonstrates agent discovery, registration, HA binding and tunnelling.
+# This is an educational model, not a packet-level Mobile IPv4 implementation.
+ 
+class MobileIP:
+    def __init__(self, home_address, home_agent):
+        self.home_address = home_address
+        self.home_agent = home_agent
+        self.binding = {}
+        self.registration_delay_ms = 0
+        self.tunnel_overhead_bytes = 20  # illustrative outer IPv4 header
+ 
+    def discover_foreign_agent(self, foreign_agent):
+        print(f"Agent discovery: found foreign agent {foreign_agent}")
+        return foreign_agent
+ 
+    def register(self, care_of_address, registration_delay_ms=35):
+        print(f"Registration request: {self.home_address} -> {care_of_address}")
+        self.registration_delay_ms += registration_delay_ms
+        self.binding[self.home_address] = care_of_address
+        print("Home Agent accepted registration.")
+        return True
+ 
+    def deliver_packet(self, payload_bytes):
+        if self.home_address not in self.binding:
+            print("No binding found: packet delivery failed.")
+            return False, 0
+ 
+        care_of_address = self.binding[self.home_address]
+        transmitted_bytes = payload_bytes + self.tunnel_overhead_bytes
+        print(f"Correspondent Node sends packet to Home Agent {self.home_agent}")
+        print(f"Home Agent tunnels packet to CoA {care_of_address}")
+        print(f"Mobile Node receives {payload_bytes} payload bytes.")
+        return True, transmitted_bytes
+ 
+    def move_to(self, new_foreign_agent, new_care_of_address):
+        print("\nMobile node changes its point of attachment.")
+        self.discover_foreign_agent(new_foreign_agent)
+        self.register(new_care_of_address)
+ 
+mn = MobileIP("10.0.0.8", "10.0.0.1")
+mn.discover_foreign_agent("FA-A")
+mn.register("172.16.1.8")
+success, wire_bytes = mn.deliver_packet(1000)
+mn.move_to("FA-B", "172.16.2.8")
+success, wire_bytes = mn.deliver_packet(1000)
+ 
+print("\nQ2 RESULTS")
+print("Current HA binding:", mn.binding[mn.home_address])
+print("Total registration delay (ms):", mn.registration_delay_ms)
+print("Bytes transmitted for a 1000-byte payload:", wire_bytes)
+print("Tunnel overhead (bytes):", mn.tunnel_overhead_bytes)

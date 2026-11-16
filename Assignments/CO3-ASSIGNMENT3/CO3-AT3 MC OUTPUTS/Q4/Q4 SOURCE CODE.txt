@@ -1,0 +1,53 @@
+# Q4: Mobile IP applied to an ambulance communication scenario.
+# Measures packet delivery and delay while the ambulance changes networks.
+ 
+import statistics
+ 
+class AmbulanceMobileIP:
+    def __init__(self):
+        self.home_ip = "192.0.2.10"
+        self.home_agent = "192.0.2.1"
+        self.current_coa = None
+        self.binding = {}
+        self.registration_ms = 40
+ 
+    def attach_to_network(self, network_name, coa):
+        self.current_coa = coa
+        self.binding[self.home_ip] = coa
+        print(f"Ambulance attached to {network_name}; CoA={coa}")
+ 
+    def send_emergency_updates(self, packet_count=20):
+        delays = []
+        delivered = 0
+        lost = 0
+        for seq in range(packet_count):
+            # Model a short interruption during the first packet after a handoff.
+            if seq == 0 and self.registration_ms > 0:
+                delay = self.registration_ms + 12
+            else:
+                delay = 12 + (seq % 4)
+            # A simple deterministic reliability model.
+            if seq in (7, 15):
+                lost += 1
+            else:
+                delivered += 1
+                delays.append(delay)
+ 
+        pdr = delivered / packet_count * 100
+        avg_delay = statistics.mean(delays) if delays else 0
+        return delivered, lost, pdr, avg_delay
+ 
+ambulance = AmbulanceMobileIP()
+ambulance.attach_to_network("City Network", "198.51.100.10")
+print("Home Agent maintains:", ambulance.binding)
+ambulance.attach_to_network("Rural Network", "203.0.113.10")
+print("Updated Home Agent binding:", ambulance.binding)
+ 
+delivered, lost, pdr, avg_delay = ambulance.send_emergency_updates()
+print("\nQ4 - EMERGENCY APPLICATION RESULTS")
+print("Packets delivered:", delivered)
+print("Packets lost:", lost)
+print(f"Packet delivery ratio: {pdr:.2f}%")
+print(f"Average one-way delay: {avg_delay:.2f} ms")
+print("Registration delay per modeled handoff:", ambulance.registration_ms, "ms")
+print("Requirement: authenticate updates and prioritize emergency messages.")

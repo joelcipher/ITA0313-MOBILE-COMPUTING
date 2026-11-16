@@ -1,0 +1,50 @@
+# Q1: Simulate a mobile user moving between two Wi-Fi access points.
+# Python version: 3.9+ | External packages: None
+ 
+import random
+import statistics
+ 
+random.seed(7)
+ 
+TOTAL_PACKETS = 100
+PACKET_INTERVAL_MS = 20
+BASE_DELAY_MS = 8
+HANDOFF_INTERRUPTIONS = {
+    "No movement": 0,
+    "Slow movement": 2,
+    "Moderate movement": 5,
+    "Fast movement": 10,
+}
+ 
+def simulate_scenario(name, interruption_packets):
+    delays = []
+    delivered = 0
+    lost = 0
+    handoff_delay = interruption_packets * PACKET_INTERVAL_MS
+ 
+    for packet_id in range(TOTAL_PACKETS):
+        # During handoff interruption, packets cannot be delivered.
+        if packet_id < interruption_packets:
+            lost += 1
+            continue
+ 
+        # Small variable wireless delay around the base delay.
+        delay = BASE_DELAY_MS + random.randint(0, 4)
+        if packet_id == interruption_packets:
+            delay += handoff_delay
+        delays.append(delay)
+        delivered += 1
+ 
+    pdr = delivered / TOTAL_PACKETS * 100
+    avg_delay = statistics.mean(delays) if delays else 0
+    return delivered, lost, pdr, avg_delay, handoff_delay
+ 
+print("Q1 - WIRELESS MOBILITY SIMULATION")
+print("Packets generated:", TOTAL_PACKETS)
+print("Scenario             Delivered  Lost  PDR(%)  Avg delay(ms)  Handoff(ms)")
+for scenario, interruption in HANDOFF_INTERRUPTIONS.items():
+    delivered, lost, pdr, avg_delay, handoff = simulate_scenario(
+        scenario, interruption
+    )
+    print(f"{scenario:20} {delivered:9} {lost:5} {pdr:7.2f}"
+          f" {avg_delay:14.2f} {handoff:12}")
